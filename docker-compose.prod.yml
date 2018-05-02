@@ -1,0 +1,41 @@
+version: "2"
+services:
+  client:
+    image: "174580102496.dkr.ecr.us-east-1.amazonaws.com/jamsel:client"
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    environment:
+      - PROD=true
+      - PORT=80
+      - PGHOST=0.0.0.0
+    expose: 
+      - "80"
+    logging:
+      driver: awslogs
+      options: 
+        awslogs-group: jamsel
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: jamsel
+  db:
+    restart: "always"
+    image: "174580102496.dkr.ecr.us-east-1.amazonaws.com/jamsel:db"
+    ports:
+      - "5432:5432"
+    logging:
+      driver: awslogs
+      options: 
+        awslogs-group: jamsel
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: jamsel
+  server: 
+    image: "174580102496.dkr.ecr.us-east-1.amazonaws.com/jamsel:server"
+    ports:
+      - "3001:3001"
+    logging:
+      driver: awslogs
+      options: 
+        awslogs-group: jamsel
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: jamsel

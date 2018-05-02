@@ -27,9 +27,9 @@ class App extends Component {
         <p className="App-intro">
           Hello!
           Is the API working?
-          He
           {this.state.testRequest}
         </p>
+        <h1>Work</h1>
       </div>
     );
   }

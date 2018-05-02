@@ -15,7 +15,7 @@ COPY . .
 
 ENV PGHOST=db
 ENV PGUSER=postgres
-ENV PGDATABASE=
+ENV PGDATABASE=jamsel
 ENV PORT=3001
-CMD ["npm", "install"]
-CMD ["npm", "start"]
+CMD ["yarn", "install"]
+CMD ["yarn", "run", "start"]

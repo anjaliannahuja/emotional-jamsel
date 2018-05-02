@@ -10,10 +10,14 @@ services:
       - "./client:/usr/src"
     depends_on:
       - server
+    networks:
+      - jamsel_net
   db: 
     build: ./db
     ports:
       - "6001:5432"
+    networks:
+      - jamsel_net
   server:
     build: ./server
     expose: 
@@ -24,3 +28,15 @@ services:
       - db
     volumes:
       - "./server:/usr/src"
+    networks:
+      jamsel_net:
+        ipv4_address: 172.16.238.11
+  
+networks: 
+  jamsel_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        -
+          subnet: 172.16.238.0/24

@@ -13,5 +13,7 @@ WORKDIR /usr/src/
 # Bundle app source
 COPY . .
 
-CMD ["yarn", "install"]
-CMD ["yarn", "run", "start"]
+ENV PROXY=http://server:3001
+
+CMD ["npm", "install"]
+CMD ["npm", "start"]

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
+import AffectivaFacialRecognition from './components/Recognition/AffectivaFacialRecognition';
 
 class App extends Component {
   state = {
@@ -30,6 +31,7 @@ class App extends Component {
           {this.state.testRequest}
         </p>
         <h1>Work</h1>
+        <AffectivaFacialRecognition />
       </div>
     );
   }

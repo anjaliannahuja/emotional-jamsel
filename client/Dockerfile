@@ -11,9 +11,4 @@ WORKDIR /usr/src/
 # RUN npm install --only=production
 
 # Bundle app source
-COPY . .
-
-ENV PROXY=http://server:3001
-
-CMD ["npm", "install"]
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]

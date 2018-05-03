@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const EmotionStats = props => {
-  const { timestamp, numFaces, ...emotions } = props
+const EmotionStats = (props) => {
+  const { timestamp, numFaces, ...emotions } = props;
   return (
-    <div></div>
+    <div>
+      {Object.entries(emotions).map(([name, value]) => (<Emotion name={name} value={value} />))}
+    </div>
   );
-}
-);
+};
 
 EmotionStats.propTypes = {
   timestamp: PropTypes.number.isRequired,

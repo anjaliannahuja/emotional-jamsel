@@ -1,13 +1,30 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const EmotionStats = ({ timestamp, numFaces, emotions }) => (
-  <div>
-    <p>{timestamp}</p>
-    <br />
-    <p>{numFaces}</p>
-    <br />
-    <p>{Object.entries(emotions)}</p>
-  </div>
+const EmotionStats = props => {
+  const { timestamp, numFaces, ...emotions } = props
+  return (
+    <div></div>
+  );
+}
+);
+
+EmotionStats.propTypes = {
+  timestamp: PropTypes.number.isRequired,
+  numFaces: PropTypes.number.isRequired,
+  joy: PropTypes.number.isRequired,
+  sadness: PropTypes.number.isRequired,
+  disgust: PropTypes.number.isRequired,
+  contempt: PropTypes.number.isRequired,
+  anger: PropTypes.number.isRequired,
+  fear: PropTypes.number.isRequired,
+  surprise: PropTypes.number.isRequired,
+  valence: PropTypes.number.isRequired,
+  engagement: PropTypes.number.isRequired,
+};
+
+const Emotion = (name, value) => (
+  <p>{`${name}: ${value.toFixed(2)}`}</p>
 );
 
 export default EmotionStats;

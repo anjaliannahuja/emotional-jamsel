@@ -11,4 +11,9 @@ WORKDIR /usr/src/
 # RUN npm install --only=production
 
 # Bundle app source
-CMD ["npm", "run", "start"]
+COPY . .
+
+ENV PROXY=http://server:3001
+
+RUN yarn install
+CMD ["yarn", "run", "start"]

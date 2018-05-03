@@ -17,5 +17,5 @@ ENV PGHOST=db
 ENV PGUSER=postgres
 ENV PGDATABASE=jamsel
 ENV PORT=3001
-CMD ["yarn", "install"]
+RUN yarn install
 CMD ["yarn", "run", "start"]

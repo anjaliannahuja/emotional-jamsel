@@ -10,4 +10,12 @@ const client = new pg.Client();
   }
 })();
 
-module.exports = client;
+module.exports.findGoogleUser = async (googleId) => {
+  client.query(`SELECT * FROM users WHERE google_id = '${googleId}';`);
+};
+
+module.exports.addGoogleUser = (googleId, displayName, firstName) => {
+  client.query(`INSERT INTO users (google_id, display_name, first_name) VALUES ('${googleId}', '${displayName}', '${firstName}') RETURNING google_id;`);
+};
+
+module.exports.client = client;

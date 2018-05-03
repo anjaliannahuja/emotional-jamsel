@@ -104,7 +104,9 @@ class AffectivaFacialRecognition extends Component {
     <div>
       Affectiva!
       <EmotionStats
-        {...this.state.results}
+        timestamp={this.state.results.timestamp}
+        numFaces={this.state.results.numFaces}
+        {...this.state.results.emotions}
       />
       <button id="start" onClick={() => this.startDetector()}>Start</button>
       <button id="stop" onClick={() => this.stopDetector()}>Stop</button>

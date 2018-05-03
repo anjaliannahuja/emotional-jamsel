@@ -25,7 +25,7 @@ EmotionStats.propTypes = {
 };
 
 const Emotion = (name, value) => (
-  <p>{`${name}: ${value.toFixed(2)}`}</p>
+  <p>{`${JSON.stringify(name)}: ${JSON.stringify(value)}`}</p>
 );
 
 export default EmotionStats;

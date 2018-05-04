@@ -6,6 +6,7 @@ const _ = require('lodash');
 // Use lodash throttle to batch additions to the crossfilter
 class EmotionSeriesChart {
   constructor(initialRecords) {
+    //color code words by emotion
     console.log('Constructing chart!', initialRecords);
     this.ndx = cf(initialRecords);
     this.all = this.ndx.groupAll();

@@ -19,7 +19,10 @@ class EmotionSeriesChart {
     });
     this.emotionsGroup = this.emotionByCategory.group();
     this.joyGroup = this.joy.group();
-    this.timeGroup = this.timeline.group();
+    this.timeGroup = this.timeline.group(d => {
+      console.log(d);
+      return d
+    });
     // this.timelineByJoy = this.timeline.group(d => d.joy);
     // this.timelineBySadness = this.timeline.group(d => d.sadness);
     // this.timelineByDisgust = this.timeline.group(d => d.disgust);

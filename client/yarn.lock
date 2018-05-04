@@ -1721,7 +1721,7 @@ cross-spawn@5.1.0, cross-spawn@^5.0.1, cross-spawn@^5.1.0:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-crossfilter2@^1.4.5:
+crossfilter2@^1.4.5, crossfilter2@^1.4.6:
   version "1.4.6"
   resolved "https://registry.yarnpkg.com/crossfilter2/-/crossfilter2-1.4.6.tgz#c173f0d75a04344ad226b1f8ae747f0386f98750"
   dependencies:
@@ -2041,7 +2041,7 @@ d3-zoom@1:
     d3-selection "1"
     d3-transition "1"
 
-d3@^5.1:
+d3@^5.1, d3@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/d3/-/d3-5.1.0.tgz#2506c4f070fe8a5a1e9a16308caacf96ae51f522"
   dependencies:
@@ -4607,7 +4607,7 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-"lodash@>=3.5 <5", lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.3.0:
+"lodash@>=3.5 <5", lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.3.0:
   version "4.17.10"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
 

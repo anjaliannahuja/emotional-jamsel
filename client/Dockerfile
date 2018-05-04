@@ -10,6 +10,10 @@ WORKDIR /usr/src/
 # If you are building your code for production
 # RUN npm install --only=production
 
+COPY . .
+
+RUN yarn install
+
 # Bundle app source
 COPY . .
 

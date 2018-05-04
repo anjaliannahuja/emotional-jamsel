@@ -19,6 +19,7 @@ class EmotionSeriesChart {
     });
     this.emotionsGroup = this.emotionByCategory.group();
     this.joyGroup = this.joy.group();
+    this.timeGroup = this.timeline.group();
     // this.timelineByJoy = this.timeline.group(d => d.joy);
     // this.timelineBySadness = this.timeline.group(d => d.sadness);
     // this.timelineByDisgust = this.timeline.group(d => d.disgust);
@@ -30,10 +31,11 @@ class EmotionSeriesChart {
     // this.timelineByEngagement = this.timeline.group(d => d.engagement);
     this.emotionSeriesChart = dc.lineChart('#emotionSeriesChart');
     this.emotionSeriesChart
+      .renderArea(true)
       .width(1000)
       .height(300)
-      .dimension(this.joy)
-      .group(this.joyGroup)
+      .dimension(this.timeline)
+      .group(this.timeGroup)
       .transitionDuration(1000)
       .x(d3.scaleLinear().domain([0, 100]))
       .renderHorizontalGridLines(true);

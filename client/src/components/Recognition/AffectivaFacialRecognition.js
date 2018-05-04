@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import EmotionSeriesChart from './EmotionSeriesChart';
+import '../../../node_modules/dc/dc.min.css';
 
 const { affdex } = window;
 

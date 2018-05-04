@@ -19,19 +19,7 @@ class EmotionSeriesChart {
     });
     this.emotionsGroup = this.emotionByCategory.group();
     this.joyGroup = this.joy.group();
-    this.timeGroup = this.timeline.group(d => {
-      console.log(d);
-      return d
-    });
-    // this.timelineByJoy = this.timeline.group(d => d.joy);
-    // this.timelineBySadness = this.timeline.group(d => d.sadness);
-    // this.timelineByDisgust = this.timeline.group(d => d.disgust);
-    // this.timelineByContempt = this.timeline.group(d => d.contempt);
-    // this.timelineByAnger = this.timeline.group(d => d.anger);
-    // this.timelineByFear = this.timeline.group(d => d.fear);
-    // this.timelineBySurprise = this.timeline.group(d => d.surprise);
-    // this.timelineByValence = this.timeline.group(d => d.valence);
-    // this.timelineByEngagement = this.timeline.group(d => d.engagement);
+    this.timeGroup = this.timeline.group();
     this.emotionSeriesChart = dc.lineChart('#emotionSeriesChart');
     this.emotionSeriesChart
       .renderArea(true)

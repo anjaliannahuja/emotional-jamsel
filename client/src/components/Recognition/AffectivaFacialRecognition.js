@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
-import EmotionStats from './EmotionStats';
+import EmotionSeriesChart from './EmotionSeriesChart';
+import '../../../node_modules/dc/dc.min.css';
 
 const { affdex } = window;
 
@@ -15,11 +16,7 @@ class AffectivaFacialRecognition extends Component {
         480,
         affdex.FaceDetectorMode.LARGE_FACES,
       ),
-      results: {
-        timestamp: 0,
-        numFaces: 0,
-        emotions: {},
-      },
+      canMount: false,
     };
 
     const { detector } = this.state;
@@ -37,30 +34,29 @@ class AffectivaFacialRecognition extends Component {
     detector.addEventListener('onStopSuccess', () => {});
     detector.addEventListener('onImageResultsSuccess', (faces, image, timestamp) => {
       if (faces[0]) {
-        this.setState(() => ({
-          results: {
-            timestamp: timestamp.toFixed(2),
-            numFaces: faces.length,
-            emotions: faces[0].emotions,
-          },
-        }));
+        const timestampFixed = +timestamp.toFixed(2);
+        if (this.state.emotionSeriesChart) {
+          const newBatchRecords = Object.entries(faces[0].emotions).reduce((newBatch, [name, value]) => {
+            newBatch.push({ name, value, timestamp: timestampFixed });
+            return newBatch;
+          }, []);
+          this.state.emotionSeriesChart.addRecords(newBatchRecords);
+        }
         this.drawFeaturePoints(image, faces[0].featurePoints);
       }
     });
   }
 
-  resetResults = () => this.setState(() => ({
-    results: {
-      timestamp: 0,
-      numFaces: 0,
-      emotions: {},
-    },
-  }));
+  componentDidMount = () => {
+    if (!this.state.emotionSeriesChart) {
+      console.log('Making chart!');
+      this.setState(() => ({ emotionSeriesChart: new EmotionSeriesChart(this.results) }), () => console.log('chart created!'));
+    }
+  }
 
   startDetector = () => {
     const { detector } = this.state;
     if (detector && !detector.isRunning) detector.start();
-    console.log('started detector!');
   }
 
   stopDetector = () => {
@@ -68,7 +64,6 @@ class AffectivaFacialRecognition extends Component {
     if (detector && detector.isRunning) {
       detector.removeEventListener();
       detector.stop();
-      this.resetResults();
     }
   }
 
@@ -76,38 +71,42 @@ class AffectivaFacialRecognition extends Component {
     const { detector } = this.state;
     if (detector && detector.isRunning) {
       detector.reset();
-      this.resetResults();
     }
   }
 
   drawFeaturePoints = (img, featurePoints) => {
     if ($('#face_video_canvas')[0]) {
       const contxt = $('#face_video_canvas')[0].getContext('2d');
-  
       const hRatio = contxt.canvas.width / img.width;
       const vRatio = contxt.canvas.height / img.height;
-      const ratio = Math.min(hRatio, vRatio);
-  
-      contxt.strokeStyle = "#FFFFFF";
+      const ratio = Math.min(hRatio, vRatio);    
+      contxt.strokeStyle = '#FFFFFF';
       for (let id of Object.values(featurePoints)) {
         contxt.beginPath();
-        contxt.arc(id.x,
-          id.y, 2, 0, 2 * Math.PI);
+        contxt.arc(id.x, id.y, 2, 0, 2 * Math.PI);
         contxt.stroke();
-  
       }
     }
   }
 
+  results = [
+    { timestamp: 0, name: 'joy', value: 0 },
+    { timestamp: 0, name: 'sadness', value: 0 },
+    { timestamp: 0, name: 'disgust', value: 0 },
+    { timestamp: 0, name: 'contempt', value: 0 },
+    { timestamp: 0, name: 'anger', value: 0 },
+    { timestamp: 0, name: 'fear', value: 0 },
+    { timestamp: 0, name: 'surprise', value: 0 },
+    { timestamp: 0, name: 'valence', value: 0 },
+    { timestamp: 0, name: 'engagement', value: 0 }
+  ];
 
   render = () => (
     <div>
       Affectiva!
-      <EmotionStats
-        timestamp={this.state.results.timestamp}
-        numFaces={this.state.results.numFaces}
-        {...this.state.results.emotions}
-      />
+      <div id="emotionSeriesChart" style={{ minHeight: '400px' }} />
+      <div id="counts" className="dc-data-count" />
+      <div id="emotionsDonut" />
       <button id="start" onClick={() => this.startDetector()}>Start</button>
       <button id="stop" onClick={() => this.stopDetector()}>Stop</button>
       <button id="reset" onClick={() => this.resetDetector()}>Reset</button>

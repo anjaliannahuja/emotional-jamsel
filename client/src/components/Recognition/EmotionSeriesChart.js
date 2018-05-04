@@ -9,26 +9,24 @@ class EmotionSeriesChart {
     console.log('Constructing chart!', initialRecords);
     this.ndx = cf(initialRecords);
     this.all = this.ndx.groupAll();
-    this.timeline = this.ndx.dimension(d => d.timestamp);
-    this.joy = this.ndx.dimension(d => d.joy);
-    this.emotionByCategory = this.ndx.dimension((d) => {
-      const { timestamp, ...notTimestamp } = d;
-      const [mostPrevalentEmotion, value] = Object.entries(notTimestamp).reduce(EmotionSeriesChart.reduceToEmotion);
-      console.log(mostPrevalentEmotion, value);
-      return mostPrevalentEmotion;
-    });
-    this.emotionsGroup = this.emotionByCategory.group();
-    this.joyGroup = this.joy.group();
-    this.timeGroup = this.timeline.group();
-    this.emotionSeriesChart = dc.lineChart('#emotionSeriesChart');
+    this.timeline = this.ndx.dimension(d => [d.timestamp, d.name]);
+    this.emotionByCategory = this.ndx.dimension(d => d.name);
+    this.emotionsGroup = this.emotionByCategory.group().reduceSum(d => d.value);
+    this.timeGroup = this.timeline.group().reduceSum(d => d.value);
+    this.emotionSeriesChart = dc.seriesChart('#emotionSeriesChart');
     this.emotionSeriesChart
-      .renderArea(true)
-      .width(1000)
-      .height(300)
+      .width(768)
+      .height(480)
+      .elasticY(true)
+      .chart(c => dc.lineChart(c).curve(d3.curveCardinal))
       .dimension(this.timeline)
       .group(this.timeGroup)
       .transitionDuration(1000)
-      .x(d3.scaleLinear().domain([0, 100]))
+      .seriesAccessor(d => `Emt: ${d.key[1]}`)
+      .keyAccessor(d => d.key[0])
+      .valueAccessor(d => d.value)
+      .x(d3.scaleLinear().domain([0, 30]))
+      .legend(dc.legend().x(350).y(350).itemHeight(13).gap(5).horizontal(1).legendWidth(140).itemWidth(70))
       .renderHorizontalGridLines(true);
     this.emotionsDonut = dc.pieChart('#emotionsDonut');
     this.emotionsDonut
@@ -50,6 +48,7 @@ class EmotionSeriesChart {
     dc.renderAll();
 
     this.throttleAddRecords = _.throttle((records) => {
+      console.log(records)
       this.ndx.add(records);
       dc.redrawAll();
     }, 1000);
@@ -59,10 +58,6 @@ class EmotionSeriesChart {
     if (currentValue >= value) return [name, currentValue];
     return [maxValueEmotion, value];
   }
-
-  batchRecords = [
-
-  ];
 
   addRecords = (records) => {
     this.throttleAddRecords(records);

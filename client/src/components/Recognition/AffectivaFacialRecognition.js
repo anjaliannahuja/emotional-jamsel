@@ -19,8 +19,6 @@ class AffectivaFacialRecognition extends Component {
       canMount: false,
     };
 
-    this.numRecords = 1;
-
     const { detector } = this.state;
     // Enable detection of all Expressions, Emotions and Emojis classifiers.
     detector.detectAllEmotions();
@@ -36,16 +34,13 @@ class AffectivaFacialRecognition extends Component {
     detector.addEventListener('onStopSuccess', () => {});
     detector.addEventListener('onImageResultsSuccess', (faces, image, timestamp) => {
       if (faces[0]) {
-        this.results.push({
-          timestamp: +timestamp.toFixed(2),
-          ...faces[0].emotions,
-        });
-        this.numRecords += 1;
+        const timestampFixed = +timestamp.toFixed(2);
         if (this.state.emotionSeriesChart) {
-          this.state.emotionSeriesChart.addRecords([{
-            timestamp: +timestamp.toFixed(2),
-            ...faces[0].emotions,
-          }]);
+          const newBatchRecords = Object.entries(faces[0].emotions).reduce((newBatch, [name, value]) => {
+            newBatch.push({ name, value, timestamp: timestampFixed });
+            return newBatch;
+          }, []);
+          this.state.emotionSeriesChart.addRecords(newBatchRecords);
         }
         this.drawFeaturePoints(image, faces[0].featurePoints);
       }
@@ -69,7 +64,6 @@ class AffectivaFacialRecognition extends Component {
     if (detector && detector.isRunning) {
       detector.removeEventListener();
       detector.stop();
-      this.resetResults();
     }
   }
 
@@ -77,7 +71,6 @@ class AffectivaFacialRecognition extends Component {
     const { detector } = this.state;
     if (detector && detector.isRunning) {
       detector.reset();
-      this.resetResults();
     }
   }
 
@@ -96,33 +89,17 @@ class AffectivaFacialRecognition extends Component {
     }
   }
 
-  resetResults = () => {
-    this.results = [{
-      timestamp: 0,
-      joy: 0,
-      sadness: 0,
-      disgust: 0,
-      contempt: 0,
-      anger: 0,
-      fear: 0,
-      surprise: 0,
-      valence: 0,
-      engagement: 0,
-    }];
-  };
-
-  results = [{
-    timestamp: 0,
-    joy: 0,
-    sadness: 0,
-    disgust: 0,
-    contempt: 0,
-    anger: 0,
-    fear: 0,
-    surprise: 0,
-    valence: 0,
-    engagement: 0,
-  }];
+  results = [
+    { timestamp: 0, name: 'joy', value: 0 },
+    { timestamp: 0, name: 'sadness', value: 0 },
+    { timestamp: 0, name: 'disgust', value: 0 },
+    { timestamp: 0, name: 'contempt', value: 0 },
+    { timestamp: 0, name: 'anger', value: 0 },
+    { timestamp: 0, name: 'fear', value: 0 },
+    { timestamp: 0, name: 'surprise', value: 0 },
+    { timestamp: 0, name: 'valence', value: 0 },
+    { timestamp: 0, name: 'engagement', value: 0 }
+  ];
 
   render = () => (
     <div>
